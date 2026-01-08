@@ -1,0 +1,36 @@
+name: b2bordering
+description: "A new Flutter project."
+
+# Prevents publishing to pub.dev (private project)
+publish_to: 'none'
+
+# App version
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # GetX (State management, routing, dependency injection)
+  get: ^4.6.6
+
+  # iOS style icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Lint rules
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  # 🔥 Assets (declare ONCE, use ALL images anywhere)
+  assets:
+    - assets/images/
+    - assets/icons/
