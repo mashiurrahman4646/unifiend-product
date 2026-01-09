@@ -15,15 +15,12 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 18, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
+
         title: const Text(
           'Cart',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: Column(
         children: [

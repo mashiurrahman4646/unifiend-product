@@ -30,24 +30,7 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.shade100,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, size: 18, color: Colors.black),
-                onPressed: () => Get.back(),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ),
-        ),
+        automaticallyImplyLeading: false, // Ensure no back button
         title: const Text(
           'Notifications',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),

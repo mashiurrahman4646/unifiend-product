@@ -1,6 +1,6 @@
-// File: auth/register/signup_ui.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../otp/otp_screen.dart';
 import '../../route/approute.dart'; // Import your routes file
 
 class SignUpScreen extends StatefulWidget {
@@ -245,10 +245,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: Validate form fields and make API call to register
-                      // On success, navigate to login or home
-                      // For now, placeholder navigation to login
-                      Get.offAllNamed(AppRoutes.mainNavbar);
+                      // Navigate to OTP Screen
+                      Get.to(() => const OtpScreen());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,

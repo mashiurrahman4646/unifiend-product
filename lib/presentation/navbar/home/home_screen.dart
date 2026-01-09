@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../controller/navbar_controller.dart';
 import 'home_controller.dart';
+import 'vegetable/vegetable_ui.dart';
+import 'fruits/fruits_ui.dart';
+import 'greens/greens_ui.dart';
+import 'dairy/dairy_ui.dart';
+import 'dry_groceries/dry_groceries_ui.dart';
+import '../../product_details/product_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,14 +28,20 @@ class HomeScreen extends StatelessWidget {
               // Header
               Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('assets/images/zora.png'),
+                  GestureDetector(
+                    onTap: () {
+                      final navbarController = Get.find<NavbarController>();
+                      navbarController.changeIndex(3); // Navigate to Profile tab
+                    },
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage('assets/images/zora.png'),
+                    ),
                   ),
                   const SizedBox(width: 12),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Hello Zara',
                         style: TextStyle(
@@ -42,11 +56,6 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  Image.asset(
-                    'assets/icons/notification.png',
-                    width: 24,
-                    height: 24,
-                  ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -106,11 +115,18 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF06AA87), Color(0xFF50634B)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -127,21 +143,22 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            'Get 30% Off First Order',
+                            'New product available here.',
                             style: TextStyle(
-                              color: Colors.white,
+                                color: Color(0xFFFBFFBE),
+
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 4),
                           Text(
-                            'Apply Code WELCOME30 . New Customers Only',
+                            'Check out our new product today',
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ],
@@ -188,156 +205,169 @@ class HomeScreen extends StatelessWidget {
                   itemCount: controller.products.length,
                   itemBuilder: (context, index) {
                     final product = controller.products[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Image
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(12),
-                                ),
-                                child: Image.asset(
-                                  product.image,
-                                  height: 120,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Obx(
-                                  () => GestureDetector(
-                                    onTap: () => product.isFavorite.toggle(),
-                                    child: product.isFavorite.value
-                                        ? const Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                            size: 24,
-                                          )
-                                        : Image.asset(
-                                            'assets/icons/favourite.png',
-                                            width: 24,
-                                            height: 24,
-                                            color: Colors.white,
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => ProductDetailsScreen(
+                          name: product.name,
+                          imagePath: product.image,
+                          price: double.parse(product.price),
+                          description: product.description,
+                          unit: product.unit,
+                          rating: product.rating,
+                          reviews: product.reviews,
+                        ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Image
+                            Stack(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        product.name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Color(0xFF4CAF50),
-                                          size: 16,
-                                        ),
-                                        Text(
-                                          ' ${product.rating} (${product.reviews})',
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF407260),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  product.description,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF407260),
-                                    height: 1.3,
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(12),
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                  child: Image.asset(
+                                    product.image,
+                                    height: 120,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '\$ ${product.price}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Color(0xFF1B5E37),
-                                      ),
-                                    ),
-                                    Text(
-                                      ' ${product.unit}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 36,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF1B5E37),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                    child: const Text(
-                                      '+ Add to Cart',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: Obx(
+                                    () => GestureDetector(
+                                      onTap: () => product.isFavorite.toggle(),
+                                      child: product.isFavorite.value
+                                          ? const Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                              size: 24,
+                                            )
+                                          : Image.asset(
+                                              'assets/icons/favourite.png',
+                                              width: 24,
+                                              height: 24,
+                                              color: Colors.white,
+                                            ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          product.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: Color(0xFF4CAF50),
+                                            size: 16,
+                                          ),
+                                          Text(
+                                            ' ${product.rating} (${product.reviews})',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF407260),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    product.description,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF407260),
+                                      height: 1.3,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '\$ ${product.price}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Color(0xFF1B5E37),
+                                        ),
+                                      ),
+                                      Text(
+                                        ' ${product.unit}',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 36,
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF1B5E37),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                      child: const Text(
+                                        '+ Add to Cart',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -381,13 +411,29 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               ...controller.categories
                   .map(
-                    (category) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        category,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                    (category) => GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        if (category == 'Vegetables') {
+                          Get.to(() => const VegetableUi());
+                        } else if (category == 'Fruits') {
+                          Get.to(() => const FruitsUi());
+                        } else if (category == 'Greens') {
+                          Get.to(() => const GreensUi());
+                        } else if (category == 'Dairy') {
+                          Get.to(() => const DairyUi());
+                        } else if (category == 'Dry Groceries') {
+                          Get.to(() => const DryGroceriesUi());
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          category,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
