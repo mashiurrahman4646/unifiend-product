@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../otp/otp_screen.dart';
-import '../../route/approute.dart'; // Import your routes file
+import '../../route/approute.dart';
+import '../../utils/responsive_helper.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,278 +26,304 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Back button
-                IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new),
-                ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final responsive = ResponsiveHelper(context, constraints);
 
-                const SizedBox(height: 20),
-
-                // Title
-                const Text(
-                  "Sign Up",
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 40),
-
-                // Business Name
-                const Text(
-                  "Business Name",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: businessNameController,
-                  decoration: InputDecoration(
-                    hintText: "enter your business name",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Email
-                const Text(
-                  "Email",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: "enter your business email",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Password
-                const Text(
-                  "Password",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    hintText: "enter your password",
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                      ),
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: responsive.horizontalPadding),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: responsive.adaptiveSize(10.0, 20.0)),
+                    // Back button
+                    IconButton(
                       onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
+                        Get.back();
                       },
+                      icon: const Icon(Icons.arrow_back_ios_new),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
 
-                const SizedBox(height: 20),
+                    SizedBox(height: responsive.adaptiveSize(10.0, 20.0)),
 
-                // Phone
-                const Text(
-                  "Phone",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: "enter your business phone",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Address
-                const Text(
-                  "Address",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: addressController,
-                  decoration: InputDecoration(
-                    hintText: "enter your business address",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Business Type
-                const Text(
-                  "Business Type",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: businessTypeController,
-                  decoration: InputDecoration(
-                    hintText: "enter your business type",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                // Confirm button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigate to OTP Screen
-                      Get.to(() => const OtpScreen());
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      "Confirm",
+                    // Title
+                    Text(
+                      "Sign Up",
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                        fontSize: responsive.titleFontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(20.0, 40.0)),
+
+                    // Business Name
+                    Text(
+                      "Business Name",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Already have an account? Login
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Already have an account? ",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.login);
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: businessNameController,
+                      decoration: InputDecoration(
+                        hintText: "enter your business name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
                         ),
                       ),
                     ),
+
+                    SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+
+                    // Email
+                    Text(
+                      "Email",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        hintText: "enter your business email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+
+                    // Password
+                    Text(
+                      "Password",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: passwordController,
+                      obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: "enter your password",
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+
+                    // Phone
+                    Text(
+                      "Phone",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        hintText: "enter your business phone",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+
+                    // Address
+                    Text(
+                      "Address",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                        hintText: "enter your business address",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+
+                    // Business Type
+                    Text(
+                      "Business Type",
+                      style: TextStyle(
+                        fontSize: responsive.bodyFontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: businessTypeController,
+                      decoration: InputDecoration(
+                        hintText: "enter your business type",
+                        border: OutlineInputBorder(
+
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(20.0, 30.0)),
+
+                    // Confirm button
+                    SizedBox(
+                      width: double.infinity,
+                      height: responsive.buttonHeight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigate to OTP Screen
+                          Get.to(() => const OtpScreen());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                            fontSize: responsive.adaptiveSize(16.0, 18.0),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Already have an account? Login
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Already have an account? ",
+                          style: TextStyle(fontSize: responsive.bodyFontSize),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.login);
+                          },
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: responsive.bodyFontSize,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: responsive.adaptiveSize(20.0, 30.0)),
                   ],
                 ),
-
-                const SizedBox(height: 30),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

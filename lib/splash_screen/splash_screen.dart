@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../route/approute.dart';
-
+import '../utils/responsive_helper.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -15,12 +15,18 @@ class SplashScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Image.asset(
-          'assets/images/splashscreen.png',
-          width: 220,
-          fit: BoxFit.contain,
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final responsive = ResponsiveHelper(context, constraints);
+
+          return Center(
+            child: Image.asset(
+              'assets/images/splashscreen.png',
+              width: responsive.adaptiveSize(220.0, 350.0),
+              fit: BoxFit.contain,
+            ),
+          );
+        },
       ),
     );
   }

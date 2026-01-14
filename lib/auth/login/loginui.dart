@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../route/approute.dart';
+import '../../utils/responsive_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,8 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
-  // Controllers without pre-filling to show hints properly
-  final emailController = TextEditingController(); // Empty, so hint shows
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -23,13 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Dynamic sizing based on available width
-            final screenWidth = constraints.maxWidth;
-            final horizontalPadding = screenWidth > 600 ? 40.0 : screenWidth * 0.05; // Larger padding on tablets/desktop
-            final subtitleWidth = screenWidth - (2 * horizontalPadding); // Full width minus padding
+            final responsive = ResponsiveHelper(context, constraints);
 
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              padding: EdgeInsets.symmetric(horizontal: responsive.horizontalPadding),
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -38,39 +35,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: screenWidth > 600 ? 80.0 : 60.0), // Taller top spacing on larger screens
-                        // Title - Scale font size slightly for larger screens
+                        SizedBox(height: responsive.adaptiveSize(60.0, 80.0)),
                         Text(
                           "Welcome Back!",
                           style: TextStyle(
-                            fontSize: screenWidth > 600 ? 32.0 : 26.0,
+                            fontSize: responsive.titleFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: screenWidth > 600 ? 16.0 : 10.0),
-                        // Subtitle - Dynamic width, responsive font
+                        SizedBox(height: responsive.adaptiveSize(10.0, 16.0)),
                         SizedBox(
-                          width: subtitleWidth,
-                          child: const Text(
+                          width: double.infinity,
+                          child: Text(
                             "Login with your credentials to access your account and manage everything from one place.",
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF26292A), // Exact Figma color
-                              height: 1.43, // Line height ~20px for fontSize 14
+                              fontSize: responsive.subtitleFontSize,
+                              color: const Color(0xFF26292A),
+                              height: 1.43,
                             ),
                           ),
                         ),
-                        SizedBox(height: screenWidth > 600 ? 60.0 : 40.0),
-                        // Email
+                        SizedBox(height: responsive.adaptiveSize(40.0, 60.0)),
                         Text(
                           "Email",
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            fontSize: responsive.bodyFontSize,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         TextField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            hintText: "jhon@gmail.com", // Now acts as true hint
+                            hintText: "jhon@gmail.com",
                             prefixIcon: const Icon(Icons.email_outlined),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -82,13 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        // Password
+                        const SizedBox(height: 20),
                         Text(
                           "Password",
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            fontSize: responsive.bodyFontSize,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         TextField(
                           controller: passwordController,
                           obscureText: _obscurePassword,
@@ -114,7 +113,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        // Forget Password
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -127,15 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: screenWidth > 600 ? 32.0 : 20.0),
-                        // Sign In Button - Full width, responsive height
+                        SizedBox(height: responsive.adaptiveSize(20.0, 32.0)),
                         SizedBox(
                           width: double.infinity,
-                          height: screenWidth > 600 ? 60.0 : 50.0,
+                          height: responsive.buttonHeight,
                           child: ElevatedButton(
                             onPressed: () {
-                              // TODO: Add your sign-in logic here (validation, API call, etc.)
-                              // On success, navigate to home
                               Get.offAllNamed(AppRoutes.mainNavbar);
                             },
                             style: ElevatedButton.styleFrom(
@@ -143,26 +138,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              elevation: 0, // Flat look to match Figma
+                              elevation: 0,
                             ),
                             child: Text(
                               "Sign In",
                               style: TextStyle(
-                                fontSize: screenWidth > 600 ? 18.0 : 16.0,
+                                fontSize: responsive.adaptiveSize(16.0, 18.0),
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: screenWidth > 600 ? 32.0 : 25.0),
-                        // Sign Up - Centered, responsive font
+                        SizedBox(height: responsive.adaptiveSize(25.0, 32.0)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Don’t have an account? ",
-                              style: TextStyle(fontSize: screenWidth > 600 ? 16.0 : 14.0),
+                              style: TextStyle(fontSize: responsive.bodyFontSize),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -173,13 +167,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: screenWidth > 600 ? 16.0 : 14.0,
+                                  fontSize: responsive.bodyFontSize,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: screenWidth > 600 ? 40.0 : 30.0),
+                        SizedBox(height: responsive.adaptiveSize(30.0, 40.0)),
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../utils/responsive_helper.dart';
 
 class OrderHistoryScreen extends StatelessWidget {
   const OrderHistoryScreen({super.key});
@@ -11,73 +12,93 @@ class OrderHistoryScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.shade100,
+        leading: LayoutBuilder(
+          builder: (context, constraints) {
+            final responsive = ResponsiveHelper(context, constraints);
+            return Padding(
+              padding: EdgeInsets.only(left: responsive.adaptiveSize(16.0, 24.0)),
+              child: Center(
+                child: Container(
+                  width: responsive.adaptiveSize(40.0, 50.0),
+                  height: responsive.adaptiveSize(40.0, 50.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey.shade100,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back_ios_new,
+                        size: responsive.adaptiveSize(18.0, 22.0), color: Colors.black),
+                    onPressed: () => Get.back(),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
               ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, size: 18, color: Colors.black),
-                onPressed: () => Get.back(),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ),
+            );
+          },
         ),
-        title: const Text(
-          'My Orders',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            final responsive = ResponsiveHelper(context, constraints);
+            return Text(
+              'My Orders',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: responsive.adaptiveSize(18.0, 22.0),
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
         ),
         centerTitle: false,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          // Order #1245 - Preparing
-          _buildOrderCard(
-            title: 'Order #1245',
-            status: 'Preparing',
-            date: '10/02/2026',
-            time: '10: 10 AM',
-            items: 'Organic Red Tomatoes 2 lb',
-            bgColor: const Color(0xFFE8EAF6), // Light Blueish/Purple tint
-            statusColor: const Color(0xFF2E7D32), // Dark Green
-            statusBgColor: const Color(0xFF2E7D32), // Filled green as per design
-            statusTextColor: Colors.white,
-            iconAsset: 'assets/icons/giftbox.png', // Reusing gift icon as per other screens
-            showReorder: false,
-          ),
-          const SizedBox(height: 16),
-          // Special Offer! - Delivered
-          _buildOrderCard(
-            title: 'Special Offer!',
-            status: 'Delivered',
-            date: '10/02/2026',
-            time: '10: 10 AM',
-            items: 'Organic Red Tomatoes lb',
-            price: 10.00,
-            bgColor: const Color(0xFFFFFDE7), // Light Yellowish
-            statusColor: const Color(0xFFB9F6CA), // Light Green
-            statusBgColor: const Color(0xFFB9F6CA),
-            statusTextColor: const Color(0xFF1B5E20),
-            iconAsset: 'assets/icons/giftbox.png',
-            showReorder: true,
-          ),
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final responsive = ResponsiveHelper(context, constraints);
+
+          return ListView(
+            padding: EdgeInsets.all(responsive.adaptiveSize(20.0, 32.0)),
+            children: [
+              // Order #1245 - Preparing
+              _buildOrderCard(
+                responsive,
+                title: 'Order #1245',
+                status: 'Preparing',
+                date: '10/02/2026',
+                time: '10: 10 AM',
+                items: 'Organic Red Tomatoes 2 lb',
+                bgColor: const Color(0xFFE8EAF6),
+                statusColor: const Color(0xFF2E7D32),
+                statusBgColor: const Color(0xFF2E7D32),
+                statusTextColor: Colors.white,
+                iconAsset: 'assets/icons/giftbox.png',
+                showReorder: false,
+              ),
+              SizedBox(height: responsive.adaptiveSize(16.0, 24.0)),
+              // Special Offer! - Delivered
+              _buildOrderCard(
+                responsive,
+                title: 'Special Offer!',
+                status: 'Delivered',
+                date: '10/02/2026',
+                time: '10: 10 AM',
+                items: 'Organic Red Tomatoes lb',
+                price: 10.00,
+                bgColor: const Color(0xFFFFFDE7),
+                statusColor: const Color(0xFFB9F6CA),
+                statusBgColor: const Color(0xFFB9F6CA),
+                statusTextColor: const Color(0xFF1B5E20),
+                iconAsset: 'assets/icons/giftbox.png',
+                showReorder: true,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildOrderCard({
+  Widget _buildOrderCard(
+    ResponsiveHelper responsive, {
     required String title,
     required String status,
     required String date,
@@ -93,29 +114,29 @@ class OrderHistoryScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: bgColor, // Background color varies
+        color: bgColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(responsive.adaptiveSize(16.0, 20.0)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Icon
                 Container(
-                  width: 48,
-                  height: 48,
-                  padding: const EdgeInsets.all(10),
+                  width: responsive.adaptiveSize(48.0, 60.0),
+                  height: responsive.adaptiveSize(48.0, 60.0),
+                  padding: EdgeInsets.all(responsive.adaptiveSize(10.0, 12.0)),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.5),
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(iconAsset, fit: BoxFit.contain), 
+                  child: Image.asset(iconAsset, fit: BoxFit.contain),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: responsive.adaptiveSize(16.0, 20.0)),
                 // Content
                 Expanded(
                   child: Column(
@@ -126,14 +147,16 @@ class OrderHistoryScreen extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: responsive.adaptiveSize(16.0, 18.0),
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: responsive.adaptiveSize(12.0, 16.0),
+                                vertical: responsive.adaptiveSize(4.0, 6.0)),
                             decoration: BoxDecoration(
                               color: statusBgColor,
                               borderRadius: BorderRadius.circular(20),
@@ -142,27 +165,27 @@ class OrderHistoryScreen extends StatelessWidget {
                               status,
                               style: TextStyle(
                                 color: statusTextColor,
-                                fontSize: 12,
+                                fontSize: responsive.adaptiveSize(12.0, 14.0),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: responsive.adaptiveSize(8.0, 12.0)),
                       Text(
                         'Date: $date  |  Time: $time',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: responsive.adaptiveSize(12.0, 14.0),
                           color: Colors.blueGrey.shade700,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: responsive.adaptiveSize(8.0, 12.0)),
                       Text(
                         items,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue, // Items seem blueish in design
+                        style: TextStyle(
+                          fontSize: responsive.adaptiveSize(14.0, 16.0),
+                          color: Colors.blue,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -175,33 +198,38 @@ class OrderHistoryScreen extends StatelessWidget {
           if (showReorder) ...[
             const Divider(height: 1),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                  horizontal: responsive.adaptiveSize(16.0, 20.0),
+                  vertical: responsive.adaptiveSize(12.0, 16.0)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '\$${price?.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: responsive.adaptiveSize(16.0, 18.0),
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF004D40), // Dark Green price
+                      color: const Color(0xFF004D40),
                     ),
                   ),
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: responsive.adaptiveSize(20.0, 24.0),
+                          vertical: responsive.adaptiveSize(8.0, 10.0)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: const BorderSide(color: Color(0xFFB9F6CA)), // Light green border
+                        side: const BorderSide(color: Color(0xFFB9F6CA)),
                       ),
                       backgroundColor: Colors.white,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Reorder',
                       style: TextStyle(
-                        color: Color(0xFF66BB6A), // Light green text matching button border
+                        color: const Color(0xFF66BB6A),
                         fontWeight: FontWeight.bold,
+                        fontSize: responsive.adaptiveSize(14.0, 16.0),
                       ),
                     ),
                   ),

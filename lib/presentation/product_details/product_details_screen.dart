@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../checkout/checkout_screen.dart';
-
+import '../../utils/responsive_helper.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final String name;
@@ -35,262 +35,287 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header with Image
-            Expanded(
-              flex: 4,
-              child: Stack(
-                children: [
-                   Container(
-                     width: double.infinity,
-                     color: const Color(0xFFF2F2F2),
-                     child: Image.asset(
-                       widget.imagePath,
-                       fit: BoxFit.cover, 
-                     ),
-                   ),
-                  Positioned(
-                    top: 16,
-                    left: 16,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios,
-                            size: 18, color: Colors.black),
-                        onPressed: () => Navigator.pop(context),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final responsive = ResponsiveHelper(context, constraints);
+
+            return Column(
+              children: [
+                // Header with Image
+                Expanded(
+                  flex: responsive.isTablet ? 5 : 4,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        color: const Color(0xFFF2F2F2),
+                        child: Image.asset(
+                          widget.imagePath,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        top: responsive.adaptiveSize(16.0, 24.0),
+                        left: responsive.adaptiveSize(16.0, 24.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: responsive.adaptiveSize(20.0, 28.0),
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back_ios,
+                                size: responsive.adaptiveSize(18.0, 22.0),
+                                color: Colors.black),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: responsive.adaptiveSize(16.0, 24.0),
+                        right: responsive.adaptiveSize(16.0, 24.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent, // Or white if preferred
+                          radius: responsive.adaptiveSize(20.0, 28.0),
+                          child: Icon(
+                            Icons.favorite_border,
+                            color: Colors.white,
+                            size: responsive.adaptiveSize(24.0, 30.0),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const Positioned(
-                    top: 16,
-                    right: 16,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent, // Or white if preferred
-                      child: Icon(Icons.favorite_border, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            
-            // Details
-            Expanded(
-              flex: 6,
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                // Details
+                Expanded(
+                  flex: responsive.isTablet ? 5 : 6,
+                  child: Container(
+                    padding: EdgeInsets.all(responsive.adaptiveSize(24.0, 32.0)),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.name,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.star,
-                                  color: Colors.green, size: 16),
-                              const SizedBox(width: 4),
-                              Text(
-                                widget.rating.toString(),
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.name,
+                              style: TextStyle(
+                                fontSize: responsive.adaptiveSize(24.0, 30.0),
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      widget.description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.teal[700],
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Text(
-                          '\$ ${widget.price.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1B5E37),
-                          ),
-                        ),
-                        Text(
-                          ' ${widget.unit}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Discount placeholder if needed, skipping for now based on image
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Quantity Selector
-                    Row(
-                      children: [
-                        const Text(
-                          'Quantity',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF2F2F2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (quantity > 1) {
-                                    setState(() {
-                                      quantity--;
-                                    });
-                                  }
-                                },
-                                icon: const Icon(Icons.remove),
-                                color: Colors.grey,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.adaptiveSize(8.0, 12.0),
+                                  vertical: responsive.adaptiveSize(4.0, 6.0)),
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              Container(
-                                color: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                child: Text(
-                                  '$quantity',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.star,
+                                      color: Colors.green,
+                                      size: responsive.adaptiveSize(16.0, 20.0)),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    widget.rating.toString(),
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: responsive.adaptiveSize(14.0, 16.0),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              IconButton(
-                                onPressed: () {
-                                   setState(() {
-                                      quantity++;
-                                    });
-                                },
-                                icon: const Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: responsive.adaptiveSize(16.0, 20.0)),
+                        Text(
+                          widget.description,
+                          style: TextStyle(
+                            fontSize: responsive.adaptiveSize(14.0, 16.0),
+                            color: Colors.teal[700],
+                            height: 1.5,
+                          ),
+                        ),
+                        SizedBox(height: responsive.adaptiveSize(24.0, 32.0)),
+                        Row(
+                          children: [
+                            Text(
+                              '\$ ${widget.price.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontSize: responsive.adaptiveSize(24.0, 30.0),
+                                fontWeight: FontWeight.bold,
                                 color: const Color(0xFF1B5E37),
                               ),
-                            ],
-                          ),
+                            ),
+                            Text(
+                              ' ${widget.unit}',
+                              style: TextStyle(
+                                fontSize: responsive.adaptiveSize(16.0, 18.0),
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          widget.unit.replaceAll('/', ''), // e.g. "Pound" from "/ Pound"
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
 
-                    const Spacer(),
-                    
-                    // Buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1B5E37),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                        SizedBox(height: responsive.adaptiveSize(32.0, 40.0)),
+
+                        // Quantity Selector
+                        Row(
+                          children: [
+                            Text(
+                              'Quantity',
+                              style: TextStyle(
+                                fontSize: responsive.adaptiveSize(16.0, 18.0),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Add to Cart',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
+                            const SizedBox(width: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF2F2F2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      if (quantity > 1) {
+                                        setState(() {
+                                          quantity--;
+                                        });
+                                      }
+                                    },
+                                    icon: const Icon(Icons.remove),
+                                    color: Colors.grey,
+                                    iconSize: responsive.adaptiveSize(24.0, 28.0),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(() => CheckoutScreen(
-                                name: widget.name,
-                                imagePath: widget.imagePath,
-                                price: widget.price,
-                                unit: widget.unit,
-                                quantity: quantity,
-                              ));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0E4F4F), // Slightly darker for Buy Now
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Buy Now',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                  Container(
                                     color: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: responsive.adaptiveSize(12.0, 16.0),
+                                        vertical: responsive.adaptiveSize(8.0, 10.0)),
+                                    child: Text(
+                                      '$quantity',
+                                      style: TextStyle(
+                                        fontSize: responsive.adaptiveSize(16.0, 18.0),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        quantity++;
+                                      });
+                                    },
+                                    icon: const Icon(Icons.add),
+                                    color: const Color(0xFF1B5E37),
+                                    iconSize: responsive.adaptiveSize(24.0, 28.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              widget.unit.replaceAll('/', ''), // e.g. "Pound" from "/ Pound"
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: responsive.adaptiveSize(14.0, 16.0),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const Spacer(),
+
+                        // Buttons
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF1B5E37),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: responsive.adaptiveSize(16.0, 20.0)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.shopping_cart_outlined,
+                                        color: Colors.white,
+                                        size: responsive.adaptiveSize(20.0, 24.0)),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Add to Cart',
+                                      style: TextStyle(
+                                          fontSize: responsive.adaptiveSize(16.0, 18.0),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() => CheckoutScreen(
+                                        name: widget.name,
+                                        imagePath: widget.imagePath,
+                                        price: widget.price,
+                                        unit: widget.unit,
+                                        quantity: quantity,
+                                      ));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color(0xFF0E4F4F), // Slightly darker for Buy Now
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: responsive.adaptiveSize(16.0, 20.0)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.shopping_bag_outlined,
+                                        color: Colors.white,
+                                        size: responsive.adaptiveSize(20.0, 24.0)),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Buy Now',
+                                      style: TextStyle(
+                                        fontSize: responsive.adaptiveSize(16.0, 18.0),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
